@@ -1,7 +1,6 @@
-import time
 from api_calls import get_all_data_range
 from bridge import Bridge
-import json
+from calculations import Calculations
 from constants import (
     Querys,
     Endpoints,
@@ -14,32 +13,45 @@ class Adapter:
         self.id = input.get('id', '1')
         self.request_data = input.get('data')
         self.bridge = Bridge()
-        isParamsOk, errorMessage = self.validate_request_data()
-        if isParamsOk:
+        params_ok, error_message = self.validate_request_data()
+        if params_ok:
             self.network = self.request_data['network']
-            self.create_request(
-                self.request_data['asset_pair'],
-                self.request_data['from_timestamp'],
-                self.request_data['to_timestamp']
-            )
+            self.asset_pair = self.request_data['asset_pair']
+            self.from_timestamp = self.request_data['from_timestamp']
+            self.to_timestamp = self.request_data['to_timestamp']
+            self.indicator = self.request_data['indicator']
+            self.time_frame = self.request_data['time_frame']
+            self.period = self.request_data['period']
+            self.create_request()
         else:
-            self.result_error(errorMessage)
+            self.result_error(error_message)
 
     def validate_request_data(self):
         return validator.validate_request_data(self)
 
-    def create_request(self, asset_pair, from_timestamp, to_timestamp):
+    def create_request(self):
         try:
             url = Endpoints.ENPOINT_NETWORK[self.network]
             data = get_all_data_range(
                 url=url,
                 query=Querys.HISTORICAL_PRICES,
-                asset_pair=asset_pair,
-                from_timestamp=from_timestamp,
-                to_timestamp=to_timestamp
+                asset_pair=self.asset_pair,
+                from_timestamp=self.from_timestamp,
+                to_timestamp=self.to_timestamp
             )
 
-            self.result = data
+            calcs = Calculations(
+                time_frame=self.time_frame,
+                indicator=self.indicator,
+                period=self.period,
+                data=data
+            )
+
+            self.result = {
+                'last_price': calcs.last_price,
+                'indicator_value': calcs.indicator_value,
+                'indicator': self.indicator
+            }
             self.result_success()
         except Exception as e:
             self.result_error(e)
