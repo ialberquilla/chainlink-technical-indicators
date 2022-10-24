@@ -4,8 +4,9 @@ from bridge import Bridge
 import json
 from constants import (
     Querys,
-    Endpoints
+    Endpoints,
 )
+import validator
 
 
 class Adapter:
@@ -13,7 +14,8 @@ class Adapter:
         self.id = input.get('id', '1')
         self.request_data = input.get('data')
         self.bridge = Bridge()
-        if self.validate_request_data():
+        isParamsOk, errorMessage = self.validate_request_data()
+        if isParamsOk:
             self.network = self.request_data['network']
             self.create_request(
                 self.request_data['asset_pair'],
@@ -21,15 +23,10 @@ class Adapter:
                 self.request_data['to_timestamp']
             )
         else:
-            self.result_error('No data provided')
+            self.result_error(errorMessage)
 
     def validate_request_data(self):
-
-        if self.request_data is None:
-            return False
-        if self.request_data == {}:
-            return False
-        return True
+        return validator.validate_request_data(self)
 
     def create_request(self, asset_pair, from_timestamp, to_timestamp):
         try:
