@@ -1,3 +1,4 @@
+
 class Querys:
     HISTORICAL_PRICES = """
                 {{
@@ -26,3 +27,8 @@ class Endpoints:
     ENPOINT_NETWORK = {
         "Ethereum": 'https://api.thegraph.com/subgraphs/name/openpredict/chainlink-prices-subgraph'
     }
+
+
+class ErrorMessages:
+    NO_DATA_ERROR = 'No data provided'
+    TIMESTAMP_ERROR = 'from_timestamp is more recent than to_timestamp'
