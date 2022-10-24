@@ -1,4 +1,3 @@
-
 class Querys:
     HISTORICAL_PRICES = """
                 {{
@@ -31,4 +30,9 @@ class Endpoints:
 
 class ErrorMessages:
     NO_DATA_ERROR = 'No data provided'
-    TIMESTAMP_ERROR = 'from_timestamp is more recent than to_timestamp'
+    TIMESTAMP_ERROR = 'from_timestamp is more recent than to_timestamp',
+    MISSING_PARAMETER = 'Request is missing some parameter'
+
+
+class Parameters:
+    STANDARD_PARAMS = ['from_timestamp','to_timestamp','asset_pair','network','indicator','time_frame','period']

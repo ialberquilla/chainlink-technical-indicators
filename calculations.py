@@ -13,7 +13,6 @@ class Calculations:
         self.data_ohlc = None
         self.last_price = 0
         self.indicator_value = 0
-
         self.format_data_time_frame()
 
     def format_data_time_frame(self):
@@ -25,12 +24,12 @@ class Calculations:
         )
         df.set_index('date', inplace=True)
         self.data_ohlc = df['price'].resample(
-            self.time_frame).ohlc(_method='ohlc').bfill()
+            self.time_frame).ohlc().bfill()
 
         self.last_price = self.data_ohlc.iloc[-1]['close']
         indicator = Indicators(
             indicator=self.indicator,
-            data=self.data_ohlc,
-            period=self.period
+            period=self.period,
+            data=self.data_ohlc
         )
         self.indicator_value = indicator.indicator_value

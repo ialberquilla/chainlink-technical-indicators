@@ -8,7 +8,10 @@ pytest = "*"
 
 [packages]
 requests = "==2.23.0"
-Flask = "==1.1.1"
+Flask = "==2.1.1"
+numpy = "==1.23.3"
+pandas = "*"
+pandas_ta = "0.3.14"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
