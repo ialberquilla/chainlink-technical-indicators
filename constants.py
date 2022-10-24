@@ -7,8 +7,8 @@ class Querys:
                         oderDirection: desc
                         where:{{
                             assetPair: "{asset_pair}"
-                            timestamp_lte: {from_timestamp}
-                            timestamp_gt: {to_timestamp}
+                            timestamp_lte: {to_timestamp}
+                            timestamp_gt: {from_timestamp}
                             }}
                         ) {{
                         id
