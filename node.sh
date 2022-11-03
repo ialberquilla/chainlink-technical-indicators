@@ -8,8 +8,11 @@ CHAINLINK_TLS_PORT=0
 SECURE_COOKIES=false
 ALLOW_ORIGINS=*
 ETH_URL=wss://eth-goerli.g.alchemy.com/v2/lfD7fS6YwmZ5Cl_3tk2am-Ewboose24E
-DATABASE_URL=postgresql://fabri:qwerty123@$1:5432/postgres?sslmode=disable
-SKIP_DATABASE_PASSWORD_COMPLEXITY_CHECK=true" > ~/.chainlink-goerli/.env
+DATABASE_URL=postgresql://fabri:qwerty123@192.168.1.4:5432/postgres?sslmode=disable
+SKIP_DATABASE_PASSWORD_COMPLEXITY_CHECK=true
+CHAINLINK_DEV=true
+FEATURE_WEBHOOK_V2=true
+" > ~/.chainlink-goerli/.env
 
 echo "givememoney@keyko.io" > ~/.chainlink-goerli/.api
 echo "password" >> ~/.chainlink-goerli/.api
