@@ -1,0 +1,16 @@
+type = "webhook"
+schemaVersion = 1
+name = "tech-indicator-iota-a"
+externalJobID = "932615da-a9f0-4263-8ffd-e33a014b5599"
+forwardingAllowed = false
+observationSource = """
+maxTaskDuration = "5m0s"
+
+
+send_to_bridge [type="bridge" name="tech-indicator" 
+requestData="{\\"id\\": 1,\\"data\\": {\\"from_timestamp\\": 1654329246,\\"to_timestamp\\": 1659599646,\\"asset_pair\\": \\"ETH/USD\\",\\"network\\": \\"Ethereum\\",\\"indicator\\": \\"BB\\",\\"time_frame\\": \\"60Min\\",\\"period\\": 25}}"]
+
+send_to_bridge
+
+
+"""
