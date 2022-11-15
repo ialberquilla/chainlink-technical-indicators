@@ -8,9 +8,15 @@ import {StrategyVault} from "./StrategyVault.sol";
 contract StrategyManager is AutomationCompatibleInterface {
     address[] strategies;
 
+    event StrategyRebalanced(address strategy);
+
     function createStrategy() public {
         StrategyVault vault = new StrategyVault();
         strategies.push(address(vault));
+    }
+
+    function getStrategies() public view returns (address[] memory) {
+        return strategies;
     }
 
     function checkUpkeep(bytes calldata checkData)
@@ -23,10 +29,10 @@ contract StrategyManager is AutomationCompatibleInterface {
         upkeepNeeded = false;
 
         for (uint256 i = 0; i < strategies.length; i++) {
-            upkeepNeeded = true;
             StrategyVault vault = StrategyVault(strategies[i]);
             if (vault.checkRebalance()) {
                 strategiesToUpdate[i] = true;
+                upkeepNeeded = true;
             }
         }
         performData = abi.encode(strategiesToUpdate);
@@ -41,6 +47,7 @@ contract StrategyManager is AutomationCompatibleInterface {
             if (strategiesToUpdate[i]) {
                 if (vault.checkRebalance()) {
                     vault.rebalance();
+                    emit StrategyRebalanced(address(vault));
                 }
             }
         }
