@@ -27,18 +27,22 @@ const Dashboard = () => {
     <ApexChartWrapper>
       <Grid container spacing={6}>
         <Grid item xs={12} md={6} lg={4}>
-          <TotalEarning />
+          {/* TODO make it show total earnings */}
+          <TotalEarning /> 
         </Grid>
-        <Grid item xs={12} md={4}>
-          <Trophy />
-        </Grid>
-        <Grid item xs={12} md={8}>
-          <StatisticsCard />
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={12} lg={8}>
+          {/* TODO make it a line graph */}
           <WeeklyOverview />
         </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        <Grid item xs={12} md={4}>
+          {/* TODO number of rebalances */}
+          <Trophy />
+        </Grid>
+        
+        {/* <Grid item xs={12} md={8}>
+          <StatisticsCard />
+        </Grid> */}
+        {/* <Grid item xs={12} md={6} lg={4}>
           <Grid container spacing={6}>
             <Grid item xs={6}>
               <CardStatisticsVerticalComponent
@@ -83,8 +87,8 @@ const Dashboard = () => {
               />
             </Grid>
           </Grid>
-        </Grid>
-        <Grid item xs={12} md={6} lg={4}>
+        </Grid> */}
+        {/* <Grid item xs={12} md={6} lg={4}>
           <SalesByCountries />
         </Grid>
         <Grid item xs={12} md={12} lg={8}>
@@ -92,7 +96,7 @@ const Dashboard = () => {
         </Grid>
         <Grid item xs={12}>
           <Table />
-        </Grid>
+        </Grid> */}
       </Grid>
     </ApexChartWrapper>
   )
