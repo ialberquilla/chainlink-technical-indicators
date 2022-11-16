@@ -71,3 +71,31 @@ describe("SubscriptionManager", function () {
     });
 
 });
+describe("GetIndicators contracts", function () {
+
+    async function deploy() {
+        const [owner] = await ethers.getSigners();
+
+        const SmaIndicatorOracle = await ethers.getContractFactory("SmaIndicatorOracle");
+        const smaIndicatorOracle = await SmaIndicatorOracle.deploy();
+
+        return {
+            smaIndicatorOracle
+        };
+    }
+
+
+    describe("Deployment", function () {
+        it("Should deploy the SMA oracle contract", async function () {
+            const {
+                smaIndicatorOracle
+            } = await loadFixture(deploy);
+
+            expect(smaIndicatorOracle.deployTransaction.hash).contains('0x')
+        });
+        // TODO test: fund oracle contract with LINK (how to it in test?)
+        // TODO call the node
+
+    });
+
+});

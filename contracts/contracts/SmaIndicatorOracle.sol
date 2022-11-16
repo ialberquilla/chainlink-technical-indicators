@@ -15,7 +15,7 @@ import '@chainlink/contracts/src/v0.8/ConfirmedOwner.sol';
  * DO NOT USE THIS CODE IN PRODUCTION.
  */
 
-contract GetSMAIndicator is ChainlinkClient, ConfirmedOwner {
+contract SmaIndicatorOracle is ChainlinkClient, ConfirmedOwner {
     using Chainlink for Chainlink.Request;
 
     uint256 public indicator_value;
