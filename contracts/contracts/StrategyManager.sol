@@ -6,13 +6,41 @@ import {StrategyVault} from "./StrategyVault.sol";
 // import "hardhat/console.sol";
 
 contract StrategyManager is AutomationCompatibleInterface {
+    address smaIndicatorOracleAddres;
+
+    constructor(address _smaIndicatorOracleAddres) public {
+        smaIndicatorOracleAddres = _smaIndicatorOracleAddres;
+    }
+
     address[] strategies;
 
     event StrategyRebalanced(address strategy);
 
-    function createStrategy() public {
-        StrategyVault vault = new StrategyVault();
+    function createStrategy(
+        string memory _asset_pair,
+        string memory _indicator,
+        string memory _time_frame,
+        uint256 _period,
+        uint256 _upper_limit,
+        uint256 _lower_limit
+    ) public {
+        StrategyVault vault = new StrategyVault(
+            _asset_pair,
+            _indicator,
+            _time_frame,
+            _period,
+            smaIndicatorOracleAddres,
+            _upper_limit,
+            _lower_limit
+        );
         strategies.push(address(vault));
+    }
+
+    function updateIndicator() public {
+        for (uint256 i = 0; i < strategies.length; i++) {
+            StrategyVault vault = StrategyVault(strategies[i]);
+            vault.updateIndicator();
+        }
     }
 
     function getStrategies() public view returns (address[] memory) {
