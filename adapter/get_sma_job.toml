@@ -1,0 +1,53 @@
+type = "directrequest"
+schemaVersion = 1
+name = "get indicators 2"
+contractAddress = "0xEe1Af345C5272E3f194881aBEB60FCf0f6e29592"
+maxTaskDuration = "10m0s"
+observationSource = """
+    decode_log   [type="ethabidecodelog"
+                  abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+                  data="$(jobRun.logData)"
+                  topics="$(jobRun.logTopics)"]
+
+
+    decode_cbor  [type="cborparse" data="$(decode_log.data)"]
+
+decode_log -> decode_cbor
+
+
+bridge_result [type="bridge" name="indicators_bridge" 
+    requestData="{\\"id\\":\\"1\\",\\"data\\":{\\"from_timestamp\\":$(decode_cbor.from_timestamp), \\"to_timestamp\\":$(decode_cbor.to_timestamp),\\"asset_pair\\":$(decode_cbor.asset_pair), \\"network\\":$(decode_cbor.network),\\"indicator\\":$(decode_cbor.indicator),\\"time_frame\\":$(decode_cbor.time_frame),\\"period\\":$(decode_cbor.period)}}"]
+
+
+
+
+
+    decode_cbor -> bridge_result
+
+    indicator_value    [type=jsonparse path="result,indicator_value"]
+    last_price    [type=jsonparse path="result,last_price"]
+
+
+    bridge_result -> indicator_value
+    bridge_result -> last_price
+
+    indicator_value -> encode_data
+    last_price -> encode_data
+
+
+    encode_data [type=ethabiencode abi="(bytes32 _requestId, uint256 _indicator_value, uint256 _last_price)"
+            data="{\\"_requestId\\": $(decode_log.requestId),\\"_indicator_value\\": $(indicator_value),\\"_last_price\\": $(last_price)}"]
+
+    encode_tx [type=ethabiencode
+            abi="fulfillOracleRequest2(bytes32 _requestId, uint256 _payment, address _callbackAddress, bytes4 _callbackFunctionId, uint256 _expiration, bytes calldata _data)"
+            data="{\\"_requestId\\": $(decode_log.requestId), \\"_payment\\": $(decode_log.payment), \\"_callbackAddress\\": $(decode_log.callbackAddr), \\"_callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"_expiration\\": $(decode_log.cancelExpiration), \\"_data\\": $(encode_data)}"]
+
+    submit_tx [type=ethtx to="0xEe1Af345C5272E3f194881aBEB60FCf0f6e29592" data="$(encode_tx)"]
+
+    encode_data -> encode_tx -> submit_tx
+
+
+
+    
+"""
+externalJobID = "60166810-ec4a-404c-a8e1-a907a7752a18"
