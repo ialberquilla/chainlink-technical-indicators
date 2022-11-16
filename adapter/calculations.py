@@ -26,7 +26,7 @@ class Calculations:
         self.data_ohlc = df['price'].resample(
             self.time_frame).ohlc().bfill()
 
-        self.last_price = self.data_ohlc.iloc[-1]['close']
+        self.last_price = int(self.data_ohlc.iloc[-1]['close'])
         indicator = Indicators(
             indicator=self.indicator,
             period=self.period,
