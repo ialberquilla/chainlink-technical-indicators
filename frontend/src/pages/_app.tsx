@@ -20,6 +20,7 @@ import ThemeComponent from 'src/@core/theme/ThemeComponent'
 
 // ** Contexts
 import { SettingsConsumer, SettingsProvider } from 'src/@core/context/settingsContext'
+import { Web3Consumer, Web3Context, Web3Provider } from 'src/@core/context/web3Context'
 
 // ** Utils Imports
 import { createEmotionCache } from 'src/@core/utils/create-emotion-cache'
@@ -66,17 +67,23 @@ const App = (props: ExtendedAppProps) => {
           name='description'
           content={``}
         />
-       
+
         <meta name='viewport' content='initial-scale=1, width=device-width' />
       </Head>
-
-      <SettingsProvider>
-        <SettingsConsumer>
-          {({ settings }) => {
-            return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
-          }}
-        </SettingsConsumer>
-      </SettingsProvider>
+      <Web3Provider >
+        <Web3Consumer>
+          {
+            ({ }) => {
+              return <SettingsProvider>
+                <SettingsConsumer>
+                  {({ settings }) => {
+                    return <ThemeComponent settings={settings}>{getLayout(<Component {...pageProps} />)}</ThemeComponent>
+                  }}
+                </SettingsConsumer>
+              </SettingsProvider>
+            }}
+        </Web3Consumer>
+      </Web3Provider >
     </CacheProvider>
   )
 }
