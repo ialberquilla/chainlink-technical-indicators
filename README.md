@@ -20,6 +20,8 @@ To create this architecture  in a decentralized way, we are using two chainlink 
 External adapter: This adapter is responsible to calculate the indicator, it leverages the chainlink architecture to receive an on-chain call, calculate the indicator value, and put the response again on the chain. Again to use decentralized pricing, we use the price feed from chainlink, using a The graph subgraph to get the historical prices and perform the calculations over them.
 Chainlink keepers: These indicators should be updated and when needed the strategies that are based on them, are rebalanced. To do so, we have created two chainlink keepers. The first keeper updates the indicators in a time-based way, we can define how often we need to update these indicators and create several keepers to that, rebalance on an hourly, daily, and weekly basis… depending on the type of trading strategy, Once the indicator is updated, the strategies should or should not rebalance, to do so, we have created another keeper that checks all the strategies and if any of them needs to be rebalanced, trigger the perform upkeep. 
 
+![Architecture](/docs/diagram.PNG)
+
 ## Components
 
 This repository has three components:
