@@ -13,6 +13,7 @@ contract StrategyVault {
     string public status = "long";
     uint256 upper_limit;
     uint256 lower_limit;
+    uint256 constant SECONDS_IN_ONE_HOUR = 3600;
 
     constructor(
         string memory _asset_pair,
@@ -35,8 +36,8 @@ contract StrategyVault {
 
     function updateIndicator() public {
         oracle.requestIndicators(
+            Strings.toString(lastTimestamp - (SECONDS_IN_ONE_HOUR * period)),
             Strings.toString(lastTimestamp),
-            Strings.toString(lastTimestamp + period),
             asset_pair,
             network,
             indicator,
