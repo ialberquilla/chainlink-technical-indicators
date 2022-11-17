@@ -8,7 +8,7 @@ In order to push these indicators on-chain, we wanted to do as most as decentral
 
 Right now, this service supports the following indicators:
 
-- SMA: Single moving average
+- SMA: Simple moving average
 - EMA: Exponential moving average
 - BB: Bolliger bands
 - RSI: Relative Strength Index
