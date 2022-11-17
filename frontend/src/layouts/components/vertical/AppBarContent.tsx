@@ -15,8 +15,9 @@ import { Settings } from 'src/@core/context/settingsContext'
 
 // ** Components
 import ModeToggler from 'src/@core/layouts/components/shared-components/ModeToggler'
-import UserDropdown from 'src/@core/layouts/components/shared-components/UserDropdown'
-import NotificationDropdown from 'src/@core/layouts/components/shared-components/NotificationDropdown'
+import Button from '@mui/material/Button'
+import { useContext } from 'react'
+import { Web3Context } from 'src/@core/context/web3Context'
 
 interface Props {
   hidden: boolean
@@ -28,6 +29,7 @@ interface Props {
 const AppBarContent = (props: Props) => {
   // ** Props
   const { hidden, settings, saveSettings, toggleNavVisibility } = props
+  const web3 = useContext(Web3Context)
 
   // ** Hook
   const hiddenSm = useMediaQuery((theme: Theme) => theme.breakpoints.down('sm'))
@@ -44,17 +46,6 @@ const AppBarContent = (props: Props) => {
             <Menu />
           </IconButton>
         ) : null}
-        <TextField
-          size='small'
-          sx={{ '& .MuiOutlinedInput-root': { borderRadius: 4 } }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position='start'>
-                <Magnify fontSize='small' />
-              </InputAdornment>
-            )
-          }}
-        />
       </Box>
       <Box className='actions-right' sx={{ display: 'flex', alignItems: 'center' }}>
         {hiddenSm ? null : (
@@ -73,8 +64,11 @@ const AppBarContent = (props: Props) => {
           </Box>
         )}
         <ModeToggler settings={settings} saveSettings={saveSettings} />
-        {/* <NotificationDropdown /> */}
-        {/* <UserDropdown /> */}
+       <Button size='small' variant='contained' onClick={web3.connectAccount}> 
+       {
+        web3.account ?  web3.account  : "Connect Wallet"
+       }
+       </Button>
       </Box>
     </Box>
   )

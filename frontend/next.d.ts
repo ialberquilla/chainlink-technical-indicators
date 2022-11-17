@@ -6,3 +6,9 @@ declare module 'next' {
     getLayout?: (page: ReactElement) => ReactNode
   }
 }
+
+declare global {
+  interface Window {
+    ethereum: any
+  }
+}
