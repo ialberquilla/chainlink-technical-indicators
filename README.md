@@ -14,7 +14,6 @@ Right now, this service supports the following indicators:
 - RSI: Relative Strength Index
 - ATR: Average true range
 
-
 ## Architecture
 To create this architecture  in a decentralized way, we are using two chainlink services:
 External adapter: This adapter is responsible to calculate the indicator, it leverages the chainlink architecture to receive an on-chain call, calculate the indicator value, and put the response again on the chain. Again to use decentralized pricing, we use the price feed from chainlink, using a The graph subgraph to get the historical prices and perform the calculations over them.
@@ -24,9 +23,19 @@ Chainlink keepers: These indicators should be updated and when needed the strate
 
 ## Components
 
-This repository has three components:
-- Adapter: Chainlink external adapter can be installed following the installations docs in the readme and installed using the node.sh script to run a local node. 
-- Contracts: Contains three contracts. 
+This repository has four components:
+- [Adapter](https://github.com/ialberquilla/chainlink-technical-indicators/tree/main/adapter): Chainlink external adapter can be installed following the installations docs in the readme.
+- Node: We deployed a chainlink node in **Polygon Mumbai** using naas.link and we set up a [job](https://github.com/ialberquilla/chainlink-technical-indicators/blob/main/adapter/get_sma_job.toml) which process data coming from the bridge.
+- [Contracts](https://github.com/ialberquilla/chainlink-technical-indicators/tree/main/contracts): Contains three contracts. 
   - SMAIndicatorOracle: This contract is used to call the node and update the de SMA indicator value on-chain.
   - SMAStrategyManager: Used to create and managed all the strategies, contains a reference to all the strategies, and receives calls to rebalance them when needed. 
   - StrategyVault: Tokenized Vault that contains the trading strategy, it contains the status of the strategy, the indicator that should be applied to rebalance and the upper and lower limit of this value to perform the rebalance. 
+- [Frontend](https://github.com/ialberquilla/chainlink-technical-indicators/tree/main/frontend): a simple UI to show how many strategies and rebalances were perfomed
+
+## Contracts Addresses (Polygon Mumbai):
+- [Node: 0xA784e85AF5725361372C589cBaD56d5634Be5a55](https://mumbai.polygonscan.com/address/0xA784e85AF5725361372C589cBaD56d5634Be5a55)
+- [Operator: 0xEe1Af345C5272E3f194881aBEB60FCf0f6e29592](https://mumbai.polygonscan.com/address/0xEe1Af345C5272E3f194881aBEB60FCf0f6e29592)
+- [SMAIndicatorOracle: 0x7BDE85a7987816166eE4B37680b3c3080c2852B5](https://mumbai.polygonscan.com/address/0x7BDE85a7987816166eE4B37680b3c3080c2852B5)
+- [Strategy Manager: 0x97d46599805A969F279c3E5cDc15A3D925faF8F4](https://mumbai.polygonscan.com/address/0x97d46599805A969F279c3E5cDc15A3D925faF8F4)
+
+
